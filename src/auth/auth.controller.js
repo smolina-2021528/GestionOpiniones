@@ -1,5 +1,5 @@
 import { sequelize } from '../../configs/db.js';
-import { User, UserProfile, UserEmail } from '../users/user.model.js';
+import { User, UserProfile, UserEmail, UserPasswordReset } from '../users/user.model.js';
 import { Role, UserRole } from '../auth/role.model.js';
 import { USER_ROLE } from '../../helpers/role-constants.js';
 import {
@@ -29,7 +29,7 @@ import crypto from 'crypto';
 import path from 'path';
 
 /* =========================
-  REGISTER
+REGISTER
    ========================= */
 export const register = async (req, res) => {
   const t = await sequelize.transaction();
@@ -115,10 +115,12 @@ export const register = async (req, res) => {
       { transaction: t }
     );
 
+    // Crear registro de reset de contraseña (vacío) para que el flujo forgotPassword funcione
     await UserPasswordReset.create(
       { UserId: user.Id },
       { transaction: t }
     );
+
     await t.commit();
 
     // Enviar email de verificación en background
@@ -139,7 +141,7 @@ export const register = async (req, res) => {
 };
 
 /* =========================
-  LOGIN
+LOGIN
    ========================= */
 export const login = async (req, res) => {
   try {
@@ -193,7 +195,7 @@ export const login = async (req, res) => {
 };
 
 /* =========================
-  VERIFY EMAIL
+VERIFY EMAIL
    ========================= */
 export const verifyEmail = async (req, res) => {
   const t = await sequelize.transaction();
@@ -244,7 +246,7 @@ export const verifyEmail = async (req, res) => {
 };
 
 /* =========================
-  RESEND VERIFICATION EMAIL
+RESEND VERIFICATION EMAIL
    ========================= */
 export const resendVerification = async (req, res) => {
   try {
@@ -285,36 +287,51 @@ export const resendVerification = async (req, res) => {
 };
 
 /* =========================
-  FORGOT PASSWORD
+FORGOT PASSWORD
    ========================= */
 export const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await findUserByEmail(email);
 
-    // Por seguridad, siempre respondemos igual
-    if (user) {
-      const resetToken = await generatePasswordResetToken();
-      const tokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
-      await updatePasswordResetToken(user.Id, resetToken, tokenExpiry);
-
-      sendPasswordResetEmail(user.Email, user.Name, resetToken).catch((err) =>
-        console.error('Error enviando email de reset:', err)
-      );
+    if (!user) {
+      return res.status(200).json({
+        success: true,
+        message: 'Si el email existe, recibirás un enlace de recuperación de contraseña.',
+      });
     }
 
+    const resetToken = await generatePasswordResetToken();
+    const tokenExpiry = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+
+    // Upsert: crear o actualizar el registro de reset
+    const [record] = await UserPasswordReset.findOrCreate({
+      where: { UserId: user.Id },
+      defaults: { UserId: user.Id },
+    });
+    record.PasswordResetToken = resetToken;
+    record.PasswordResetTokenExpiry = tokenExpiry;
+    await record.save();
+
+    // Intentar enviar email (no bloquea la respuesta si falla)
+    sendPasswordResetEmail(user.Email, user.Name, resetToken).catch((err) =>
+      console.error('Error enviando email de reset:', err)
+    );
+
+    // En desarrollo retornar el token directamente para pruebas sin SMTP
+    const isDev = process.env.NODE_ENV !== 'production';
     return res.status(200).json({
       success: true,
       message: 'Si el email existe, recibirás un enlace de recuperación de contraseña.',
+      ...(isDev && { debug_token: resetToken }),
     });
   } catch (error) {
     console.error('Error en forgotPassword:', error);
     return res.status(500).json({ success: false, message: 'Error interno del servidor.' });
   }
 };
-
 /* =========================
-  RESET PASSWORD
+RESET PASSWORD
    ========================= */
 export const resetPassword = async (req, res) => {
   try {
@@ -323,10 +340,6 @@ export const resetPassword = async (req, res) => {
     const user = await findUserByPasswordResetToken(token);
     if (!user) {
       return res.status(400).json({ success: false, message: 'Token inválido o expirado.' });
-    }
-
-    if (!user.UserPasswordReset || !user.UserPasswordReset.PasswordResetToken) {
-      return res.status(400).json({ success: false, message: 'Token de reset inválido o ya utilizado.' });
     }
 
     const hashedPassword = await hashPassword(newPassword);
@@ -347,7 +360,7 @@ export const resetPassword = async (req, res) => {
 };
 
 /* =========================
-  GET PROFILE (usuario autenticado)
+GET PROFILE (usuario autenticado)
    ========================= */
 export const getProfile = async (req, res) => {
   try {
@@ -363,7 +376,7 @@ export const getProfile = async (req, res) => {
 };
 
 /* =========================
-  GET PROFILE BY ID
+GET PROFILE BY ID
    ========================= */
 export const getProfileById = async (req, res) => {
   try {
