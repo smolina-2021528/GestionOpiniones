@@ -29,7 +29,7 @@ import crypto from 'crypto';
 import path from 'path';
 
 /* =========================
-   REGISTER
+  REGISTER
    ========================= */
 export const register = async (req, res) => {
   const t = await sequelize.transaction();
@@ -115,6 +115,10 @@ export const register = async (req, res) => {
       { transaction: t }
     );
 
+    await UserPasswordReset.create(
+      { UserId: user.Id },
+      { transaction: t }
+    );
     await t.commit();
 
     // Enviar email de verificación en background
@@ -135,7 +139,7 @@ export const register = async (req, res) => {
 };
 
 /* =========================
-   LOGIN
+  LOGIN
    ========================= */
 export const login = async (req, res) => {
   try {
@@ -189,7 +193,7 @@ export const login = async (req, res) => {
 };
 
 /* =========================
-   VERIFY EMAIL
+  VERIFY EMAIL
    ========================= */
 export const verifyEmail = async (req, res) => {
   const t = await sequelize.transaction();
@@ -240,7 +244,7 @@ export const verifyEmail = async (req, res) => {
 };
 
 /* =========================
-   RESEND VERIFICATION EMAIL
+  RESEND VERIFICATION EMAIL
    ========================= */
 export const resendVerification = async (req, res) => {
   try {
@@ -281,7 +285,7 @@ export const resendVerification = async (req, res) => {
 };
 
 /* =========================
-   FORGOT PASSWORD
+  FORGOT PASSWORD
    ========================= */
 export const forgotPassword = async (req, res) => {
   try {
@@ -310,7 +314,7 @@ export const forgotPassword = async (req, res) => {
 };
 
 /* =========================
-   RESET PASSWORD
+  RESET PASSWORD
    ========================= */
 export const resetPassword = async (req, res) => {
   try {
@@ -343,7 +347,7 @@ export const resetPassword = async (req, res) => {
 };
 
 /* =========================
-   GET PROFILE (usuario autenticado)
+  GET PROFILE (usuario autenticado)
    ========================= */
 export const getProfile = async (req, res) => {
   try {
@@ -359,7 +363,7 @@ export const getProfile = async (req, res) => {
 };
 
 /* =========================
-   GET PROFILE BY ID
+  GET PROFILE BY ID
    ========================= */
 export const getProfileById = async (req, res) => {
   try {
