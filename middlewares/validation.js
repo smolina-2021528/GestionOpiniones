@@ -137,3 +137,87 @@ export const validateResetPassword = [
 
   handleValidationErrors,
 ];
+
+/**
+ * Validaciones para actualizar perfil
+ */
+export const validateUpdateProfile = [
+  body('name')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre no puede estar vacío')
+    .isLength({ max: 25 })
+    .withMessage('El nombre no puede tener más de 25 caracteres')
+    .matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+    .withMessage('El nombre solo puede contener letras y espacios'),
+
+  body('surname')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El apellido no puede estar vacío')
+    .isLength({ max: 25 })
+    .withMessage('El apellido no puede tener más de 25 caracteres')
+    .matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)
+    .withMessage('El apellido solo puede contener letras y espacios'),
+
+  body('username')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre de usuario no puede estar vacío')
+    .isLength({ max: 50 })
+    .withMessage('El nombre de usuario no puede tener más de 50 caracteres'),
+
+  body('phone')
+    .optional()
+    .matches(/^\d{8}$/)
+    .withMessage('El número de teléfono debe tener exactamente 8 dígitos'),
+
+  handleValidationErrors,
+];
+
+/**
+ * Validaciones para cambiar contraseña (autenticado)
+ */
+export const validateChangePassword = [
+  body('currentPassword')
+    .notEmpty()
+    .withMessage('La contraseña actual es obligatoria'),
+
+  body('newPassword')
+    .notEmpty()
+    .withMessage('La nueva contraseña es obligatoria')
+    .isLength({ min: 8 })
+    .withMessage('La nueva contraseña debe tener al menos 8 caracteres'),
+
+  handleValidationErrors,
+];
+
+/**
+ * Validaciones para publicaciones
+ */
+export const validatePublication = [
+  body('title')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El título no puede estar vacío')
+    .isLength({ max: 150 })
+    .withMessage('El título no puede superar 150 caracteres'),
+
+  body('category')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('La categoría no puede estar vacía'),
+
+  body('content')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El contenido no puede estar vacío'),
+
+  handleValidationErrors,
+];  
