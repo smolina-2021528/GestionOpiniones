@@ -21,7 +21,7 @@ import {
 import authRoutes from '../src/auth/auth.routes.js';
 import userRoutes from '../src/users/user.routes.js';
 
-const BASE_PATH = '/api/v1';
+const BASE_PATH = '/gestoropinion/v1';
 
 const middlewares = (app) => {
   app.use(express.urlencoded({ extended: false, limit: '10mb' }));
