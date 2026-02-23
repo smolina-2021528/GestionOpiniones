@@ -178,7 +178,28 @@ export const validateChangePassword = [
 ];
 
 // validaciones para publicaciones
-export const validatePublication = [
+export const validatePublicationCreate = [
+  body('title')
+    .trim()
+    .notEmpty()
+    .withMessage('El título es obligatorio')
+    .isLength({ max: 150 })
+    .withMessage('El título no puede superar 150 caracteres'),
+
+  body('category')
+    .trim()
+    .notEmpty()
+    .withMessage('La categoría es obligatoria'),
+
+  body('content')
+    .trim()
+    .notEmpty()
+    .withMessage('El contenido es obligatorio'),
+
+  handleValidationErrors,
+];
+
+export const validatePublicationUpdate = [
   body('title')
     .optional()
     .trim()
@@ -200,7 +221,7 @@ export const validatePublication = [
     .withMessage('El contenido no puede estar vacío'),
 
   handleValidationErrors,
-];  
+];
 
 // validaciones para comentarios
 export const validateComment = [

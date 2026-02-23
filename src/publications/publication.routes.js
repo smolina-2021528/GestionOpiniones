@@ -7,23 +7,23 @@ import {
   deletePublication,
 } from './publication.controller.js';
 import { validateJWT } from '../../middlewares/validate-JWT.js';
-import { validatePublication } from '../../middlewares/validation.js';
+import { validatePublicationCreate, validatePublicationUpdate } from '../../middlewares/validation.js';
 
 const router = Router();
 
-// POST   /api/v1/publications 
-router.post('/', validateJWT, validatePublication, createPublication);
+// POST   /gestoropinion/v1/publications
+router.post('/', validateJWT, validatePublicationCreate, createPublication);
 
-// GET    /api/v1/publications  
+// GET    /gestoropinion/v1/publications
 router.get('/', getPublications);
 
-// GET    /api/v1/publications/:id  
+// GET    /gestoropinion/v1/publications/:id
 router.get('/:id', getPublicationById);
 
-// PUT    /api/v1/publications/:id 
-router.put('/:id', validateJWT, validatePublication, updatePublication);
+// PUT    /gestoropinion/v1/publications/:id
+router.put('/:id', validateJWT, validatePublicationUpdate, updatePublication);
 
-// DELETE /api/v1/publications/:id
+// DELETE /gestoropinion/v1/publications/:id
 router.delete('/:id', validateJWT, deletePublication);
 
 export default router;
