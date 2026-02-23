@@ -1,19 +1,19 @@
 import { Router } from 'express';
-import {
-  updateUserRole,
-  getUserRoles,
-  getUsersByRole,
-} from './user.controller.js';
+import { updateUserRole, getUserRoles, getUsersByRole } from './user.controller.js';
+import { validateJWT } from '../../middlewares/validate-JWT.js';
+import { validateAdmin } from '../../middlewares/validate-admin.js';
 
 const router = Router();
 
-// PUT /api/v1/users/:userId/role
-router.put('/:userId/role', ...updateUserRole);
+// todas las rutas verificacn si el usuario actual tiene el rol de admin
 
-// GET /api/v1/users/:userId/roles
-router.get('/:userId/roles', ...getUserRoles);
+// PUT /gestoropinion/v1/users/:userId/role  
+router.put('/:userId/role', validateJWT, validateAdmin, updateUserRole);
 
-// GET /api/v1/users/by-role/:roleName
-router.get('/by-role/:roleName', ...getUsersByRole);
+// GET /gestoropinion/v1/users/:userId/roles 
+router.get('/:userId/roles', validateJWT, getUserRoles);
+
+// GET /gestoropinion/v1/users/by-role/:roleName 
+router.get('/by-role/:roleName', validateJWT, validateAdmin, getUsersByRole);
 
 export default router;

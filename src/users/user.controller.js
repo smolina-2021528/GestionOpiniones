@@ -1,86 +1,69 @@
 import { asyncHandler } from '../../middlewares/server-genericError-handler.js';
-import { validateJWT } from '../../middlewares/validate-JWT.js';
 import { findUserById } from '../../helpers/user-db.js';
 import {
   getUserRoleNames,
   getUsersByRole as repoGetUsersByRole,
   setUserSingleRole,
 } from '../../helpers/role-db.js';
-import { ALLOWED_ROLES, ADMIN_ROLE } from '../../helpers/role-constants.js';
+import { ALLOWED_ROLES } from '../../helpers/role-constants.js';
 import { buildUserResponse } from '../../utils/user-helpers.js';
 import { sequelize } from '../../configs/db.js';
 
-const ensureAdmin = async (req) => {
-  const currentUserId = req.userId;
-  if (!currentUserId) return false;
-  const roles =
-    req.user?.UserRoles?.map((ur) => ur.Role?.Name).filter(Boolean) ??
-    (await getUserRoleNames(currentUserId));
-  return roles.includes(ADMIN_ROLE);
-};
+// PUT /gestoropinion/v1/users/:userId/role
+export const updateUserRole = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const { roleName } = req.body || {};
 
-export const updateUserRole = [
-  validateJWT,
-  asyncHandler(async (req, res) => {
-    if (!(await ensureAdmin(req))) {
-      return res.status(403).json({ success: false, message: 'Forbidden' });
-    }
+  const normalized = (roleName || '').trim().toUpperCase();
+  if (!ALLOWED_ROLES.includes(normalized)) {
+    return res.status(400).json({
+      success: false,
+      message: `Rol no permitido. Valores válidos: ${ALLOWED_ROLES.join(', ')}`,
+    });
+  }
 
-    const { userId } = req.params;
-    const { roleName } = req.body || {};
+  const user = await findUserById(userId);
+  if (!user) {
+    return res.status(404).json({ success: false, message: 'Usuario no encontrado.' });
+  }
 
-    const normalized = (roleName || '').trim().toUpperCase();
-    if (!ALLOWED_ROLES.includes(normalized)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Role not allowed. Use USER_ROLE or ADMIN_ROLE',
-      });
-    }
+  const { updatedUser } = await setUserSingleRole(user, normalized, sequelize);
 
-    const user = await findUserById(userId);
-    if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: 'User not found' });
-    }
+  return res.status(200).json({
+    success: true,
+    message: `Rol actualizado a ${normalized} exitosamente.`,
+    data: buildUserResponse(updatedUser),
+  });
+});
 
-    const { updatedUser } = await setUserSingleRole(
-      user,
-      normalized,
-      sequelize
-    );
+// GET /gestoropinion/v1/users/:userId/roles
+export const getUserRoles = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
 
-    return res.status(200).json(buildUserResponse(updatedUser));
-  }),
-];
+  const user = await findUserById(userId);
+  if (!user) {
+    return res.status(404).json({ success: false, message: 'Usuario no encontrado.' });
+  }
 
-export const getUserRoles = [
-  validateJWT,
-  asyncHandler(async (req, res) => {
-    const { userId } = req.params;
-    const roles = await getUserRoleNames(userId);
-    return res.status(200).json(roles);
-  }),
-];
+  const roles = await getUserRoleNames(userId);
+  return res.status(200).json({ success: true, data: roles });
+});
 
-export const getUsersByRole = [
-  validateJWT,
-  asyncHandler(async (req, res) => {
-    if (!(await ensureAdmin(req))) {
-      return res.status(403).json({ success: false, message: 'Forbidden' });
-    }
+// GET /gestoropinion/v1/users/by-role/:roleName
+export const getUsersByRole = asyncHandler(async (req, res) => {
+  const { roleName } = req.params;
+  const normalized = (roleName || '').trim().toUpperCase();
 
-    const { roleName } = req.params;
-    const normalized = (roleName || '').trim().toUpperCase();
-    if (!ALLOWED_ROLES.includes(normalized)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Role not allowed. Use USER_ROLE or ADMIN_ROLE',
-      });
-    }
+  if (!ALLOWED_ROLES.includes(normalized)) {
+    return res.status(400).json({
+      success: false,
+      message: `Rol no permitido. Valores válidos: ${ALLOWED_ROLES.join(', ')}`,
+    });
+  }
 
-    const users = await repoGetUsersByRole(normalized);
-    const payload = users.map(buildUserResponse);
-    return res.status(200).json(payload);
-  }),
-];
+  const users = await repoGetUsersByRole(normalized);
+  return res.status(200).json({
+    success: true,
+    data: users.map(buildUserResponse),
+  });
+});
