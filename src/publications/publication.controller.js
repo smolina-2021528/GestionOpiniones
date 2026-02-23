@@ -86,20 +86,28 @@ export const updatePublication = async (req, res) => {
 
 // borrar una publicacion
 export const deletePublication = async (req, res) => {
+  const t = await sequelize.transaction();
   try {
     const { id } = req.params;
     const publication = await Publication.findByPk(id);
     if (!publication) {
+      await t.rollback();
       return res.status(404).json({ success: false, message: 'Publicación no encontrada.' });
     }
     if (publication.UserId !== req.userId) {
+      await t.rollback();
       return res.status(403).json({ success: false, message: 'No tienes permiso para eliminar esta publicación.' });
     }
 
-    await publication.destroy();
-    return res.status(200).json({ success: true, message: 'Publicación eliminada.' });
+    // Eliminar comentarios de la publicacion atnes de eliminar la publicacion
+    await Comment.destroy({ where: { PublicationId: id }, transaction: t });
+    await publication.destroy({ transaction: t });
+    await t.commit();
+
+    return res.status(200).json({ success: true, message: 'Publicación y sus comentarios eliminados.' });
   } catch (error) {
+    if (t && !t.finished) await t.rollback();
     console.error('Error en deletePublication:', error);
-    return res.status(500).json({ success: false, message: 'Error interno en el servidor' });
+    return res.status(500).json({ success: false, message: 'Error interno del servidor.' });
   }
 };
