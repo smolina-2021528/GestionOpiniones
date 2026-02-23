@@ -66,6 +66,9 @@ export const initServer = async () => {
     const { seedRoles } = await import('../helpers/role-seed.js');
     await seedRoles();
 
+    const { seedAdmin } = await import('../helpers/admin-seed.js');
+    await seedAdmin();
+
     middlewares(app);
     routes(app);
     app.use(errorHandler);
