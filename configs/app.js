@@ -9,6 +9,8 @@ import { dbConnection } from './db.js';
 import '../src/users/user.model.js';
 import '../src/auth/role.model.js';
 import '../src/auth/RoleUpgradeRequest.js';
+import '../src/publications/publication.model.js';
+import '../src/comments/comment.model.js';
 
 import { requestLimit } from '../middlewares/request-limit.js';
 import { corsOptions } from './cors-configuration.js';
@@ -20,6 +22,9 @@ import {
 
 import authRoutes from '../src/auth/auth.routes.js';
 import userRoutes from '../src/users/user.routes.js';
+import profileRoutes from '../src/profile/profile.routes.js';
+import publicationRoutes from '../src/publications/publication.routes.js';
+import commentRoutes from '../src/comments/comment.routes.js';
 
 const BASE_PATH = '/gestoropinion/v1';
 
@@ -35,6 +40,9 @@ const middlewares = (app) => {
 const routes = (app) => {
   app.use(`${BASE_PATH}/auth`, authRoutes);
   app.use(`${BASE_PATH}/users`, userRoutes);
+  app.use(`${BASE_PATH}/profile`, profileRoutes);
+  app.use(`${BASE_PATH}/publications`, publicationRoutes);
+  app.use(`${BASE_PATH}/publications/:publicationId/comments`, commentRoutes);
 
   app.get(`${BASE_PATH}/health`, (_req, res) => {
     res.status(200).json({
