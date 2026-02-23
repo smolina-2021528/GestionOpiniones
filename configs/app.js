@@ -22,7 +22,7 @@ import {
 
 import authRoutes from '../src/auth/auth.routes.js';
 import userRoutes from '../src/users/user.routes.js';
-import profileRoutes from '../src/profile/profile.routes.js';
+import profileRoutes from '../src/profiles/profile.routes.js';
 import publicationRoutes from '../src/publications/publication.routes.js';
 import commentRoutes from '../src/comments/comment.routes.js';
 
