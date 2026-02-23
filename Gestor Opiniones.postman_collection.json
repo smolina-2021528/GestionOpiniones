@@ -1,0 +1,793 @@
+{
+  "info": {
+    "_postman_id": "34dad952-c27e-4a69-8d55-6633d8f4f4e4",
+    "name": "Gestor Opiniones",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48332506",
+    "_collection_link": "https://go.postman.co/collection/48332506-34dad952-c27e-4a69-8d55-6633d8f4f4e4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth Endpoints",
+      "item": [
+        {
+          "name": "Registrar Usuario",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{   \"name\":\"Sebastian\",\r\n    \"surname\":\"Molina\",\r\n    \"username\":\"sebas17\",\r\n    \"email\":\"sebastianmolinah1704@gmail.com\",\r\n    \"password\":\"pruebaprueba\",\r\n    \"phone\":\"12345678\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verificar Token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"token\": \"OpmL1hZ5XQuew9vrVBupDLIP5dIOX4XB4yZA9O_bsfs\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/auth/verify-email",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "auth",
+                "verify-email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login con Usuario",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"emailOrUsername\": \"admin\",\r\n  \"password\": \"Admin1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login con Email",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"emailOrUsername\": \"sebastianmolinah1704@gmail.com\",\r\n  \"password\": \"micontra12345\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ver Perfil",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiOWEzMjg0ZjItMzU3My00ZTdkLWFjZDctM2JjMGFjNzg0ZDg1IiwiaWF0IjoxNzcxNjk0Nzg2LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxNzIzNTg2LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.qD0GiWmt1kEf8ySacXB15NscKzs2owOxmSvWdLi2a1I",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/auth/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Solicitar Cambio Password",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"sebastianmolinah1704@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/auth/forgot-password",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "auth",
+                "forgot-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Resetear Contraseña",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"token\": \"rXJCmW_6ejZRxyWk9p4PVNzSXDm4LJHQx4JeaTk1i-g\",\r\n  \"newPassword\": \"NuevaContra\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/auth/reset-password",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "auth",
+                "reset-password"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reenviar Verificación",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"sebastianmolinah1704@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/auth/resend-verification",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "auth",
+                "resend-verification"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "Actualizar datos de usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiODMwOTNkYmMtZWU0ZC00ZjI1LThhZDMtOGU2YmM5MDFmYmExIiwiaWF0IjoxNzcxODA3OTk5LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxODM2Nzk5LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.q_thmUKy2ovUxwzMjQLpEz8JC2t4SJOGs7boBPeC8v4"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sebastián Alejandro\",\n  \"surname\": \"Molina Herrera\",\n  \"username\": \"sebitasmoli\",\n  \"phone\": \"37238513\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/profile",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "profile"
+              ]
+            },
+            "description": "Edita el perfil del usuario autenticado. Todos los campos son opcionales. También acepta multipart/form-data con 'profilePicture' para cambiar la imagen."
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar contraseña sin mandar email",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiODMwOTNkYmMtZWU0ZC00ZjI1LThhZDMtOGU2YmM5MDFmYmExIiwiaWF0IjoxNzcxODA3OTk5LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxODM2Nzk5LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.q_thmUKy2ovUxwzMjQLpEz8JC2t4SJOGs7boBPeC8v4"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"NuevaContra\",\n  \"newPassword\": \"micontra12345\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/profile/change-password",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "profile",
+                "change-password"
+              ]
+            },
+            "description": "Cambia la contraseña del usuario autenticado. Requiere ingresar la contraseña actual para confirmar."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Publications",
+      "item": [
+        {
+          "name": "Crear Publicacion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.Id) {",
+                  "  pm.collectionVariables.set('publication_id', res.data.Id);",
+                  "  console.log('Publication ID guardado:', res.data.Id);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiOWJjNDM1NTYtYjYyNS00NjFjLWI0M2YtM2QzNWFkODFiMjM4IiwiaWF0IjoxNzcxODA4NTA2LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxODM3MzA2LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.QjSNDr7t_SSoYVF1d21psqZzYLM884CK0NFulZpBgkw"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"El Real Madrid es mejor que el Barcelona\",\n  \"category\": \"Deportes\",\n  \"content\": \"Esta es mi opinión sobre el tema. Creo que es muy importante considerar todos los aspectos.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications"
+              ]
+            },
+            "description": "Crea una nueva publicación. Requiere autenticación. Guarda automáticamente el ID en {{publication_id}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener todas las publicaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications"
+              ]
+            },
+            "description": "Lista todas las publicaciones con su autor. Endpoint público, no requiere autenticación."
+          },
+          "response": []
+        },
+        {
+          "name": "Publicacion por id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications/usr_sB4X3Z6kfq6t",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications",
+                "usr_sB4X3Z6kfq6t"
+              ]
+            },
+            "description": "Obtiene una publicación específica con su autor y todos sus comentarios. Endpoint público."
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Publicacion",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiOWJjNDM1NTYtYjYyNS00NjFjLWI0M2YtM2QzNWFkODFiMjM4IiwiaWF0IjoxNzcxODA4NTA2LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxODM3MzA2LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.QjSNDr7t_SSoYVF1d21psqZzYLM884CK0NFulZpBgkw"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"El Madrid es Mucho Mejor que el Barcelona\",\n  \"category\": \"Deportes\",\n  \"content\": \"Considero que el titulo lo describe mejor ahora\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications/usr_sB4X3Z6kfq6t",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications",
+                "usr_sB4X3Z6kfq6t"
+              ]
+            },
+            "description": "Edita una publicación. Solo el autor puede editarla. Todos los campos son opcionales."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Publication",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiOWJjNDM1NTYtYjYyNS00NjFjLWI0M2YtM2QzNWFkODFiMjM4IiwiaWF0IjoxNzcxODA4NTA2LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxODM3MzA2LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.QjSNDr7t_SSoYVF1d21psqZzYLM884CK0NFulZpBgkw"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications/usr_sB4X3Z6kfq6t",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications",
+                "usr_sB4X3Z6kfq6t"
+              ]
+            },
+            "description": "Elimina una publicación y todos sus comentarios. Solo el autor puede eliminarla."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comments",
+      "item": [
+        {
+          "name": "Crear Comentario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.Id) {",
+                  "  pm.collectionVariables.set('comment_id', res.data.Id);",
+                  "  console.log('Comment ID guardado:', res.data.Id);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiOWJjNDM1NTYtYjYyNS00NjFjLWI0M2YtM2QzNWFkODFiMjM4IiwiaWF0IjoxNzcxODA4NTA2LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxODM3MzA2LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.QjSNDr7t_SSoYVF1d21psqZzYLM884CK0NFulZpBgkw"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Yo opino que esta publicacion es falsa.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications/usr_sB4X3Z6kfq6t/comments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications",
+                "usr_sB4X3Z6kfq6t",
+                "comments"
+              ]
+            },
+            "description": "Crea un comentario en una publicación. Requiere autenticación. Guarda el ID del comentario en {{comment_id}}."
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener comentarios de publicacion",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications/usr_sB4X3Z6kfq6t/comments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications",
+                "usr_sB4X3Z6kfq6t",
+                "comments"
+              ]
+            },
+            "description": "Lista todos los comentarios de una publicación con su autor. Endpoint público."
+          },
+          "response": []
+        },
+        {
+          "name": "Editar Comentario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiOWJjNDM1NTYtYjYyNS00NjFjLWI0M2YtM2QzNWFkODFiMjM4IiwiaWF0IjoxNzcxODA4NTA2LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxODM3MzA2LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.QjSNDr7t_SSoYVF1d21psqZzYLM884CK0NFulZpBgkw"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Creo que esta publicacion es cierta\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications/usr_sB4X3Z6kfq6t/comments/usr_y2ajv1EyQrT2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications",
+                "usr_sB4X3Z6kfq6t",
+                "comments",
+                "usr_y2ajv1EyQrT2"
+              ]
+            },
+            "description": "Edita un comentario. Solo el autor del comentario puede editarlo."
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Comentario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfMmUzVVRkVnRLNDNGIiwianRpIjoiOWJjNDM1NTYtYjYyNS00NjFjLWI0M2YtM2QzNWFkODFiMjM4IiwiaWF0IjoxNzcxODA4NTA2LCJyb2xlcyI6WyJVU0VSX1JPTEUiXSwiZXhwIjoxNzcxODM3MzA2LCJhdWQiOiJnZXN0b3JfbWFuYWdlbWVudCIsImlzcyI6Imdlc3Rvcl9tYW5hZ2VtZW50In0.QjSNDr7t_SSoYVF1d21psqZzYLM884CK0NFulZpBgkw"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/publications/usr_sB4X3Z6kfq6t/comments/usr_y2ajv1EyQrT2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "publications",
+                "usr_sB4X3Z6kfq6t",
+                "comments",
+                "usr_y2ajv1EyQrT2"
+              ]
+            },
+            "description": "Elimina un comentario. Solo el autor del comentario puede eliminarlo."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users (este solo es para administradores)",
+      "item": [
+        {
+          "name": "Mostrar rol de usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfYjNxM3VLVktGRjQ0IiwianRpIjoiZjkxNjI1ZjctZTFjNC00YTY1LWI2ODctN2MyZDhhOThlOWZmIiwiaWF0IjoxNzcxODA5Njg4LCJyb2xlcyI6WyJBRE1JTl9ST0xFIl0sImV4cCI6MTc3MTgzODQ4OCwiYXVkIjoiZ2VzdG9yX21hbmFnZW1lbnQiLCJpc3MiOiJnZXN0b3JfbWFuYWdlbWVudCJ9.ScwQ5lmHA27k23bBVt02D6JdqTmOwFbiTHVdvHqjWOI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/users/usr_2e3UTdVtK43F/roles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "users",
+                "usr_2e3UTdVtK43F",
+                "roles"
+              ]
+            },
+            "description": "Obtiene los roles de un usuario específico. Requiere autenticación."
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiarle el rol a un usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfYjNxM3VLVktGRjQ0IiwianRpIjoiZjkxNjI1ZjctZTFjNC00YTY1LWI2ODctN2MyZDhhOThlOWZmIiwiaWF0IjoxNzcxODA5Njg4LCJyb2xlcyI6WyJBRE1JTl9ST0xFIl0sImV4cCI6MTc3MTgzODQ4OCwiYXVkIjoiZ2VzdG9yX21hbmFnZW1lbnQiLCJpc3MiOiJnZXN0b3JfbWFuYWdlbWVudCJ9.ScwQ5lmHA27k23bBVt02D6JdqTmOwFbiTHVdvHqjWOI"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleName\": \"ADMIN_ROLE\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/users/usr_2e3UTdVtK43F/role",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "users",
+                "usr_2e3UTdVtK43F",
+                "role"
+              ]
+            },
+            "description": "Cambia el rol de un usuario. Solo accesible por ADMIN_ROLE. Valores: USER_ROLE o ADMIN_ROLE."
+          },
+          "response": []
+        },
+        {
+          "name": "Listar usuarios segun su rol",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfYjNxM3VLVktGRjQ0IiwianRpIjoiZjkxNjI1ZjctZTFjNC00YTY1LWI2ODctN2MyZDhhOThlOWZmIiwiaWF0IjoxNzcxODA5Njg4LCJyb2xlcyI6WyJBRE1JTl9ST0xFIl0sImV4cCI6MTc3MTgzODQ4OCwiYXVkIjoiZ2VzdG9yX21hbmFnZW1lbnQiLCJpc3MiOiJnZXN0b3JfbWFuYWdlbWVudCJ9.ScwQ5lmHA27k23bBVt02D6JdqTmOwFbiTHVdvHqjWOI"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3006/gestoropinion/v1/users/by-role/ADMIN_ROLE",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3006",
+              "path": [
+                "gestoropinion",
+                "v1",
+                "users",
+                "by-role",
+                "ADMIN_ROLE"
+              ]
+            },
+            "description": "Lista todos los usuarios con un rol específico. Solo accesible por ADMIN_ROLE. Valores: USER_ROLE o ADMIN_ROLE."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3006/gestoropinion/v1/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3006",
+          "path": [
+            "gestoropinion",
+            "v1",
+            "health"
+          ]
+        },
+        "description": "Verifica que el servidor esté corriendo correctamente."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "publication_id",
+      "value": ""
+    },
+    {
+      "key": "comment_id",
+      "value": ""
+    }
+  ]
+}
