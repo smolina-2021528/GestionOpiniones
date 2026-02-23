@@ -1,9 +1,8 @@
 import { Publication } from './publication.model.js';
 import { User } from '../users/user.model.js';
+import { Comment } from '../comments/comment.model.js';
 
-/* =========================
-   CREATE PUBLICATION
-   ========================= */
+// crear una publicacion
 export const createPublication = async (req, res) => {
   try {
     const { title, category, content } = req.body;
@@ -20,9 +19,7 @@ export const createPublication = async (req, res) => {
   }
 };
 
-/* =========================
-   GET ALL PUBLICATIONS
-   ========================= */
+// obtener todas las publicaciones
 export const getPublications = async (req, res) => {
   try {
     const publications = await Publication.findAll({
@@ -36,14 +33,20 @@ export const getPublications = async (req, res) => {
   }
 };
 
-/* =========================
-   GET ONE PUBLICATION
-   ========================= */
+// obtener una publicacion por su id
 export const getPublicationById = async (req, res) => {
   try {
     const { id } = req.params;
     const publication = await Publication.findByPk(id, {
-      include: [{ model: User, as: 'Author', attributes: ['Id', 'Name', 'Surname', 'Username'] }],
+      include: [
+        { model: User, as: 'Author', attributes: ['Id', 'Name', 'Surname', 'Username'] },
+        {
+          model: Comment,
+          as: 'Comments',
+          include: [{ model: User, as: 'Author', attributes: ['Id', 'Name', 'Surname', 'Username'] }],
+          order: [['created_at', 'ASC']],
+        },
+      ],
     });
     if (!publication) {
       return res.status(404).json({ success: false, message: 'Publicación no encontrada.' });
@@ -55,9 +58,7 @@ export const getPublicationById = async (req, res) => {
   }
 };
 
-/* =========================
-   UPDATE PUBLICATION
-   ========================= */
+// actualizar una publicacion
 export const updatePublication = async (req, res) => {
   try {
     const { id } = req.params;
@@ -83,9 +84,7 @@ export const updatePublication = async (req, res) => {
   }
 };
 
-/* =========================
-   DELETE PUBLICATION
-   ========================= */
+// borrar una publicacion
 export const deletePublication = async (req, res) => {
   try {
     const { id } = req.params;
