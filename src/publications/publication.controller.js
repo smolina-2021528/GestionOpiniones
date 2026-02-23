@@ -1,6 +1,8 @@
+import { sequelize } from '../../configs/db.js';
 import { Publication } from './publication.model.js';
 import { User } from '../users/user.model.js';
 import { Comment } from '../comments/comment.model.js';
+import { fn, col } from 'sequelize';
 
 // crear una publicacion
 export const createPublication = async (req, res) => {
@@ -19,11 +21,18 @@ export const createPublication = async (req, res) => {
   }
 };
 
-// obtener todas las publicaciones
+// obtener todas las publicaciones con conteo de comentarios
 export const getPublications = async (req, res) => {
   try {
     const publications = await Publication.findAll({
-      include: [{ model: User, as: 'Author', attributes: ['Id', 'Name', 'Surname', 'Username'] }],
+      include: [
+        { model: User, as: 'Author', attributes: ['Id', 'Name', 'Surname', 'Username'] },
+        { model: Comment, as: 'Comments', attributes: [] },
+      ],
+      attributes: {
+        include: [[fn('COUNT', col('Comments.id')), 'commentCount']],
+      },
+      group: ['Publication.id', 'Author.id'],
       order: [['created_at', 'DESC']],
     });
     return res.status(200).json({ success: true, data: publications });
@@ -33,7 +42,7 @@ export const getPublications = async (req, res) => {
   }
 };
 
-// obtener una publicacion por su id
+// obtener una publicacion por su id (incluye comentarios)
 export const getPublicationById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -84,7 +93,7 @@ export const updatePublication = async (req, res) => {
   }
 };
 
-// borrar una publicacion
+// borrar una publicacion y sus comentarios
 export const deletePublication = async (req, res) => {
   const t = await sequelize.transaction();
   try {
@@ -99,7 +108,6 @@ export const deletePublication = async (req, res) => {
       return res.status(403).json({ success: false, message: 'No tienes permiso para eliminar esta publicación.' });
     }
 
-    // Eliminar comentarios de la publicacion atnes de eliminar la publicacion
     await Comment.destroy({ where: { PublicationId: id }, transaction: t });
     await publication.destroy({ transaction: t });
     await t.commit();
