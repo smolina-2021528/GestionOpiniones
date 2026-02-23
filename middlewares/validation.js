@@ -1,8 +1,6 @@
 import { body, validationResult } from 'express-validator';
 
-/**
- * Middleware para procesar resultados de validación
- */
+// middleware para manejar las respuestas en las validaciones
 export const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -19,9 +17,7 @@ export const handleValidationErrors = (req, res, next) => {
   next();
 };
 
-/**
- * Validaciones para el registro de usuario
- */
+// validaciones para registrar un usuario
 export const validateRegister = [
   body('name')
     .trim()
@@ -72,9 +68,7 @@ export const validateRegister = [
   handleValidationErrors,
 ];
 
-/**
- * Validaciones para el login
- */
+// validaciones para poder hacer login
 export const validateLogin = [
   body('emailOrUsername')
     .trim()
@@ -86,18 +80,14 @@ export const validateLogin = [
   handleValidationErrors,
 ];
 
-/**
- * Validaciones para verificación de email
- */
+//validaciones para verificar un correo
 export const validateVerifyEmail = [
   body('token').notEmpty().withMessage('El token de verificación es requerido'),
 
   handleValidationErrors,
 ];
 
-/**
- * Validaciones para reenvío de verificación
- */
+//validaciones para reenviar una verificacion
 export const validateResendVerification = [
   body('email')
     .trim()
@@ -109,9 +99,7 @@ export const validateResendVerification = [
   handleValidationErrors,
 ];
 
-/**
- * Validaciones para forgot password
- */
+// validaciones para una contraseña olvidada
 export const validateForgotPassword = [
   body('email')
     .trim()
@@ -123,9 +111,7 @@ export const validateForgotPassword = [
   handleValidationErrors,
 ];
 
-/**
- * Validaciones para reset password
- */
+//validaciones para resetear una contraseña
 export const validateResetPassword = [
   body('token').notEmpty().withMessage('El token de recuperación es requerido'),
 
@@ -138,9 +124,7 @@ export const validateResetPassword = [
   handleValidationErrors,
 ];
 
-/**
- * Validaciones para actualizar perfil
- */
+//validaciones para poder actualizar un pefril 
 export const validateUpdateProfile = [
   body('name')
     .optional()
@@ -178,9 +162,7 @@ export const validateUpdateProfile = [
   handleValidationErrors,
 ];
 
-/**
- * Validaciones para cambiar contraseña (autenticado)
- */
+// validaciones para cambiar una contraseña
 export const validateChangePassword = [
   body('currentPassword')
     .notEmpty()
@@ -195,9 +177,7 @@ export const validateChangePassword = [
   handleValidationErrors,
 ];
 
-/**
- * Validaciones para publicaciones
- */
+// validaciones para publicaciones
 export const validatePublication = [
   body('title')
     .optional()
@@ -221,3 +201,13 @@ export const validatePublication = [
 
   handleValidationErrors,
 ];  
+
+// validaciones para comentarios
+export const validateComment = [
+  body('content')
+    .trim()
+    .notEmpty().withMessage('El contenido del comentario es obligatorio.')
+    .isLength({ max: 1000 }).withMessage('El comentario no puede superar 1000 caracteres.'),
+
+  handleValidationErrors,
+];
